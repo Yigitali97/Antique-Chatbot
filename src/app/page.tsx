@@ -1,72 +1,26 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useRef, useState } from "react";
-import Image from "next/image";
-import MessageBubble from "@/components/message-bubble";
+import ChatMessages from "@/components/chat-messages";
+import ChatForm from "@/components/chat-form";
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
 
-  const [files, setFiles] = useState<FileList | undefined>(undefined);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   return (
-    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-      {messages.map((m) => (
-        <div key={m.id} className="whitespace-pre-wrap">
-          <MessageBubble content={m.content} role={m.role} />
-          <div>
-            {m?.experimental_attachments
-              ?.filter((attachment) =>
-                attachment?.contentType?.startsWith("image/")
-              )
-              .map((attachment, index) => (
-                <Image
-                  key={`${m.id}-${index}`}
-                  src={attachment.url}
-                  width={500}
-                  height={500}
-                  alt={attachment.name ?? `attachment-${index}`}
-                  className="my-5"
-                />
-              ))}
-          </div>
+    <div className="flex min-h-screen flex-col items-center">
+      <div className="w-full max-w-2xl h-screen relative">
+        <div className="overflow-y-auto absolute top-0 left-0 right-0 bottom-[140px] scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent">
+          <ChatMessages messages={messages} />
         </div>
-      ))}
-
-      <form
-        className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl space-y-2"
-        onSubmit={(event) => {
-          handleSubmit(event, {
-            experimental_attachments: files,
-          });
-
-          setFiles(undefined);
-
-          if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-          }
-        }}
-      >
-        <input
-          type="file"
-          className=""
-          onChange={(event) => {
-            if (event.target.files) {
-              setFiles(event.target.files);
-            }
-          }}
-          multiple
-          ref={fileInputRef}
-        />
-        <input
-          className="w-full p-2 text-black"
-          value={input}
-          placeholder="Say something..."
-          onChange={handleInputChange}
-        />
-      </form>
+        <div className="absolute bottom-10 left-0 right-0">
+          <ChatForm
+            input={input}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+          />
+        </div>
+      </div>
     </div>
   );
 }
