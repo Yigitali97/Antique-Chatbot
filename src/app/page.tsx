@@ -13,7 +13,7 @@ export default function Chat() {
         <div className="overflow-y-auto absolute top-0 left-0 right-0 bottom-[140px] scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent">
           <ChatMessages messages={messages} />
         </div>
-        <div className="absolute bottom-10 left-0 right-0">
+        <div className="absolute bottom-5 left-0 right-0">
           <ChatForm
             input={input}
             handleInputChange={handleInputChange}
