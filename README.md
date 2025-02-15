@@ -2,6 +2,8 @@
 
 A professional antique seller with deep expertise in vintage and rare collectibles, especially exquisite jewellery.
 
+![image](/public/screenshot.png)
+
 Tech Stack:
 
 - Next.js

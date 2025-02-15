@@ -1,5 +1,9 @@
 import { useRef, useState } from "react";
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  PlusIcon,
+  XMarkIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 interface ChatFormProps {
@@ -18,6 +22,7 @@ export default function ChatForm({
 }: ChatFormProps) {
   const [files, setFiles] = useState<FileList | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [previews, setPreviews] = useState<string[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,10 +47,19 @@ export default function ChatForm({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      formRef.current?.requestSubmit();
+    }
+  };
+
   return (
     <form
-      className="w-full p-4  bg-zinc-800 space-y-4 rounded-lg"
+      ref={formRef}
+      className="w-full p-4 bg-zinc-800 space-y-4 rounded-lg"
       onSubmit={(event) => {
+        event.preventDefault();
         handleSubmit(event, {
           experimental_attachments: files,
         });
@@ -53,23 +67,23 @@ export default function ChatForm({
       }}
     >
       {files && files.length > 0 && (
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent">
           {previews.map((preview, index) => (
-            <div key={index} className="relative">
-              <div className="w-[100px] h-[100px] relative">
+            <div key={index} className="relative flex-shrink-0">
+              <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-zinc-700">
                 <Image
                   src={preview}
                   alt={`Preview ${index + 1}`}
                   fill
-                  className="object-cover rounded-lg"
+                  className="object-cover"
                 />
               </div>
               <button
                 type="button"
-                className="absolute -top-2 -right-2 p-1 bg-gray-100 rounded-full hover:bg-gray-200"
+                className="absolute -top-2 -right-2 p-1 bg-zinc-700 rounded-full hover:bg-zinc-600 transition-colors"
                 onClick={clearFiles}
               >
-                <XMarkIcon className="w-4 h-4 text-gray-500" />
+                <XMarkIcon className="w-4 h-4 text-white" />
               </button>
             </div>
           ))}
@@ -79,7 +93,7 @@ export default function ChatForm({
         <div className="relative">
           <input
             type="file"
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            className="hidden"
             onChange={handleFileChange}
             multiple
             ref={fileInputRef}
@@ -87,7 +101,8 @@ export default function ChatForm({
           />
           <button
             type="button"
-            className="p-2 rounded-full transition-colors border border-white"
+            className="p-2 rounded-full transition-colors border border-white hover:bg-zinc-700"
+            onClick={() => fileInputRef.current?.click()}
           >
             <PlusIcon className="w-6 h-6 text-white" />
           </button>
@@ -97,7 +112,14 @@ export default function ChatForm({
           value={input}
           placeholder="Say something..."
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
         />
+        <button
+          type="submit"
+          className="p-2 rounded-full transition-colors border border-white hover:bg-zinc-700"
+        >
+          <PaperAirplaneIcon className="w-6 h-6 text-white" />
+        </button>
       </div>
     </form>
   );
