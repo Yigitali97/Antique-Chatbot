@@ -14,7 +14,7 @@ Tech Stack:
 ## Project Setup
 
 1. Clone the project
-2. Install the packages `npm install`
+2. Install the packages `npm install --legacy-peer-deps`
 3. Creat a `.env.local` file and add `OPENAI_API_KEY`
 4. Run the development server `npm run dev`:
 5. Open the url in the terminal with your browser to see the result.
