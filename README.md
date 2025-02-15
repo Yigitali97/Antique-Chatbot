@@ -1,5 +1,7 @@
 # Antique-Seller-Chatbot
 
+A professional antique seller with deep expertise in vintage and rare collectibles, especially exquisite jewellery.
+
 Tech Stack:
 
 - Next.js
@@ -7,8 +9,14 @@ Tech Stack:
 - AI SDK by Vercel
 - OpenAI gpt-4o
 
-## Getting Started
+## Project Setup
 
-First, clone the project and install the packages `npm install` then creat a `.env.local` file and add `OPENAI_API_KEY` then run the development server `npm run dev`:
+1. Clone the project
+2. Install the packages `npm install`
+3. Creat a `.env.local` file and add `OPENAI_API_KEY`
+4. Run the development server `npm run dev`:
+5. Open the url in the terminal with your browser to see the result.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Info
+
+The model configuration and system prompts are in [this file](./src/app/api/chat/route.ts)

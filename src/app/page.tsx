@@ -20,14 +20,14 @@ export default function Chat() {
   }, [messages, status]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center">
-      <div className="w-full max-w-2xl h-screen relative">
-        <div className="overflow-y-auto absolute top-0 left-0 right-0 bottom-[140px] scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent">
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="w-full max-w-2xl h-screen flex flex-col">
+        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent">
           <ChatMessages messages={messages} />
           {status === "submitted" && <TypingIndicator />}
           <div ref={messagesEndRef} />
         </div>
-        <div className="absolute bottom-5 left-0 right-0">
+        <div className="p-4">
           <ChatForm
             input={input}
             handleInputChange={handleInputChange}
